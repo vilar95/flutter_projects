@@ -15,13 +15,12 @@ class _InitialSreenState extends State<InitialSreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-              child: const Icon(
-            Icons.list,
-            color: Colors.white,
-          )),
+        leading: const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Icon(
+                      Icons.list,
+                      color: Colors.white,
+                    ),
         ),
         backgroundColor: Colors.blue,
         title: const Text(
