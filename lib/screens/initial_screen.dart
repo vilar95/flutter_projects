@@ -47,8 +47,12 @@ class _InitialSreenState extends State<InitialSreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue,
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const FormScreen()));
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (contextNew) => FormScreen(taskContext: context),
+            ),
+          );
         },
         child: const Icon(Icons.add),
       ),
@@ -56,8 +60,12 @@ class _InitialSreenState extends State<InitialSreen> {
         opacity: opacity ? 1 : 0,
         duration: const Duration(seconds: 1),
         child: ListView(
-          children: 
-          TaskInherited.of(context).taskList,
+          
+          padding: const EdgeInsets.only(top: 10, bottom: 70),
+          
+          children:
+              //Aqui(TaskInherited) é onde você encontra esse método(dentroDo), que pede um contexto(context) e retorna o objeto(taskList)
+              TaskInherited.dentroDo(context).taskList,
         ),
       ),
     );

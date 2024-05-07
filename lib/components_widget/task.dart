@@ -1,18 +1,28 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_projects/components_widget/difficulty.dart';
 
 class Task extends StatefulWidget {
   final String name;
-  final String image;
+  final String foto;
   final int difficultyStar;
-  const Task(this.name, this.image, this.difficultyStar, {super.key});
-
+   Task(this.name, this.foto, this.difficultyStar, {super.key});
+  int nivel = 0;
   @override
   State<Task> createState() => _TaskState();
 }
 
 class _TaskState extends State<Task> {
-  int nivel = 0;
+  
+
+  bool assetOrNetwork() {
+    if (widget.foto.contains('http')) {
+      return false;
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -46,10 +56,15 @@ class _TaskState extends State<Task> {
                       height: 100,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(4),
-                        child: Image.asset(
-                          widget.image,
-                          fit: BoxFit.cover,
-                        ),
+                        child: assetOrNetwork()
+                            ? Image.asset(
+                                widget.foto,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.network(
+                                widget.foto,
+                                fit: BoxFit.cover,
+                              ),
                       ),
                     ),
                     Column(
@@ -75,7 +90,7 @@ class _TaskState extends State<Task> {
                       child: ElevatedButton(
                         onPressed: () {
                           setState(() {
-                            nivel++;
+                            widget.nivel++;
                           });
                           //print(nivel);
                         },
@@ -104,7 +119,7 @@ class _TaskState extends State<Task> {
                       child: LinearProgressIndicator(
                         color: Colors.orange,
                         value: (widget.difficultyStar > 0)
-                            ? (nivel / widget.difficultyStar) / 10
+                            ? (widget.nivel / widget.difficultyStar) / 10
                             : 1,
                       ),
                     ),
@@ -112,7 +127,7 @@ class _TaskState extends State<Task> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Nível $nivel',
+                      'Nível ${widget.nivel}',
                       style: const TextStyle(
                         color: Colors.white,
                       ),
@@ -121,7 +136,7 @@ class _TaskState extends State<Task> {
                 ],
               ),
             ],
-          )
+          ),
         ],
       ),
     );
