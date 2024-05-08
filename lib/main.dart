@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
             seedColor: const Color.fromARGB(255, 25, 145, 243)).copyWith(background: Colors.blue),
       ),
-      home: TaskInherited(child: const InitialSreen()),
+      home: TaskInherited(child:  InitialSreen()),
     );
   }
 }
