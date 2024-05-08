@@ -21,15 +21,20 @@ class _InitialSreenState extends State<InitialSreen> {
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: IconButton(
-            icon: Icon(levelUp ? Icons.upload_outlined : Icons.upload_sharp),
-            onPressed: () {
-              setState(() {
-                levelUp = !levelUp;
-                widget.level++;
-              });
-            },
+          padding: const EdgeInsets.all(1.0),
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 2000),
+            child: IconButton(
+              key: ValueKey<bool>(levelUp),
+              icon: const Icon( Icons.arrow_circle_up),
+              iconSize: 37,
+              onPressed: () {
+                setState(() {
+                  levelUp = !levelUp;
+                  widget.level++;
+                });
+              },
+            ),
           ),
         ),
         title: const Text(
@@ -58,7 +63,7 @@ class _InitialSreenState extends State<InitialSreen> {
               child: SizedBox(
                 width: 200,
                 child: LinearProgressIndicator(
-                  color: Colors.orange.shade900,
+                  color: Colors.orange.shade800,
                   value: (widget.level > 0) ? widget.level / TaskInherited.dentroDo(context).taskList.length : 1,
                 ),
               ),
@@ -78,7 +83,7 @@ class _InitialSreenState extends State<InitialSreen> {
       
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.orange.shade700,
         onPressed: () {
           Navigator.push(
             context,

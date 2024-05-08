@@ -30,7 +30,7 @@ class _TaskState extends State<Task> {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4),
-              color: Colors.blue,
+              color: Colors.blue.shade700,
             ),
             height: 140,
           ),
