@@ -23,10 +23,10 @@ class _InitialSreenState extends State<InitialSreen> {
         leading: Padding(
           padding: const EdgeInsets.all(1.0),
           child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 2000),
+            duration: const Duration(milliseconds: 1000),
             child: IconButton(
               key: ValueKey<bool>(levelUp),
-              icon: const Icon( Icons.arrow_circle_up),
+              icon: const Icon( Icons.arrow_circle_up,),
               iconSize: 37,
               onPressed: () {
                 setState(() {
