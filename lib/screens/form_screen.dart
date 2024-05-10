@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_projects/data/task_inherited.dart';
+import 'package:flutter_projects/components_widget/task.dart';
+import 'package:flutter_projects/data/task_dao.dart';
+//import 'package:flutter_projects/data/task_inherited.dart';
 
 class FormScreen extends StatefulWidget {
   const FormScreen({super.key, required this.taskContext});
@@ -139,10 +141,16 @@ class _FormScreenState extends State<FormScreen> {
                         // print(nameController.text);
                         // print(difficultyController.text);
                         // print(imageController.text);
-                        TaskInherited.dentroDo(widget.taskContext).newTask(
-                            nameController.text,
-                            imageController.text,
-                            int.parse(difficultyController.text));
+                        TaskDao().save(Task(
+                          nameController.text,
+                          imageController.text,
+                          int.parse(difficultyController.text),
+                        ));
+                        // TaskInherited.of(widget.taskContext).newTask(
+                        //     nameController.text,
+                        //     imageController.text,
+                        //     int.parse(difficultyController.text));
+
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text('Tarefa criada com sucesso!'),

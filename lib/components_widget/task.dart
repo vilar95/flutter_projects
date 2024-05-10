@@ -1,13 +1,16 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_projects/components_widget/difficulty.dart';
+import 'package:flutter_projects/data/task_dao.dart';
 
 class Task extends StatefulWidget {
-  final String name;
+  final String nome;
   final String foto;
-  final int difficultyStar;
-  Task(this.name, this.foto, this.difficultyStar, {super.key});
+  final int dificuldade;
+  Task(this.nome, this.foto, this.dificuldade, {super.key});
   int nivel = 0;
   @override
   State<Task> createState() => _TaskState();
@@ -72,36 +75,90 @@ class _TaskState extends State<Task> {
                         SizedBox(
                           width: 200,
                           child: Text(
-                            widget.name,
+                            widget.nome,
                             style: const TextStyle(
-                                fontSize: 24, overflow: TextOverflow.ellipsis),
+                                fontSize: 24, overflow: TextOverflow.clip),
                           ),
                         ),
                         Difficulty(
-                            difficultyLevel: widget.difficultyStar,
-                            widget: widget)
+                            difficultyLevel: widget.dificuldade, widget: widget)
                       ],
                     ),
                     SizedBox(
-                      height: 74,
-                      width: 74,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            widget.nivel++;
-                          });
-                          //print(nivel);
-                        },
-                        child: const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.arrow_drop_up),
-                            Text(
-                              'UP',
-                              style: TextStyle(fontSize: 12),
-                            )
-                          ],
-                        ),
+                      height: 120,
+                      width: 64,
+                      child: Column(
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    backgroundColor: Colors.orange.shade800,
+                                    title: const Text(
+                                      'DELETAR',
+                                    ),
+                                    content: const Text(
+                                      'Deseja deletar a tarefa?',
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        child: const Text(
+                                          'Não',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context).pop(0);
+                                        },
+                                      ),
+                                      TextButton(
+                                        child: const Text(
+                                          'Sim',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          TaskDao().delete(widget.nome);
+                                          Navigator.of(context).pop(1);                                                                                  
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ).then((value) => setState((){}));
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Colors.orange.shade700),
+                            ),
+                            child: const Icon(Icons.close),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                widget.nivel++;
+                              });
+                              //print(nivel);
+                            },
+                            child: const Padding(
+                              padding: EdgeInsets.all(4.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.arrow_drop_up),
+                                  Text(
+                                    'UP',
+                                    style: TextStyle(fontSize: 14),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -111,23 +168,24 @@ class _TaskState extends State<Task> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(10.0),
                     child: SizedBox(
                       width: 200,
                       child: LinearProgressIndicator(
                         color: Colors.orange,
-                        value: (widget.difficultyStar > 0)
-                            ? (widget.nivel / widget.difficultyStar) / 10
+                        value: (widget.dificuldade > 0)
+                            ? (widget.nivel / widget.dificuldade) / 10
                             : 1,
                       ),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(10.0),
                     child: Text(
                       'Nível ${widget.nivel}',
                       style: const TextStyle(
                         color: Colors.white,
+                        fontSize: 16,
                       ),
                     ),
                   ),

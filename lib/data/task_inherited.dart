@@ -23,7 +23,7 @@ class TaskInherited extends InheritedWidget {
   void newTask(String name, String image, int difficulty){
     taskList.add(Task(name, image, difficulty));
   }
-  static TaskInherited dentroDo(BuildContext context){
+  static TaskInherited of(BuildContext context){
     final TaskInherited? result = 
     context.dependOnInheritedWidgetOfExactType<TaskInherited>();
     assert(result != null, ' ');
