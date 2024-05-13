@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_projects/data/task_inherited.dart';
+//import 'package:flutter_projects/data/task_inherited.dart';
 
 
 import 'package:flutter_projects/screens/initial_screen.dart';
@@ -20,7 +20,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
             seedColor: const Color.fromARGB(255, 25, 145, 243)).copyWith(background: Colors.blue),
       ),
-      home: TaskInherited(child:  InitialSreen()),
+      //home: TaskInherited(child:  InitialSreen()),
+      home: InitialSreen(),
     );
   }
 }

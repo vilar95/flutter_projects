@@ -1,8 +1,6 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_projects/components_widget/difficulty.dart';
 import 'package:flutter_projects/data/task_dao.dart';
 
@@ -10,8 +8,9 @@ class Task extends StatefulWidget {
   final String nome;
   final String foto;
   final int dificuldade;
-  Task(this.nome, this.foto, this.dificuldade, {super.key});
   int nivel = 0;
+  Task(this.nome, this.foto, this.dificuldade, this.nivel, {super.key});
+  
   @override
   State<Task> createState() => _TaskState();
 }
@@ -123,7 +122,8 @@ class _TaskState extends State<Task> {
                                         ),
                                         onPressed: () {
                                           TaskDao().delete(widget.nome);
-                                          Navigator.of(context).pop(1);                                                                                  
+                                          Navigator.of(context).pop(1);
+                                        setState((){});                               
                                         },
                                       ),
                                     ],
@@ -138,11 +138,12 @@ class _TaskState extends State<Task> {
                             child: const Icon(Icons.close),
                           ),
                           ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async{
                               setState(() {
-                                widget.nivel++;
+                                widget.nivel++;                                
                               });
                               //print(nivel);
+                              await TaskDao().save(widget);
                             },
                             child: const Padding(
                               padding: EdgeInsets.all(4.0),
@@ -182,7 +183,7 @@ class _TaskState extends State<Task> {
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Text(
-                      'Nível ${widget.nivel}',
+                      'EXP ${widget.nivel}',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16,

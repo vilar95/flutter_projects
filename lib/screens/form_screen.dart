@@ -15,7 +15,7 @@ class _FormScreenState extends State<FormScreen> {
   TextEditingController nameController = TextEditingController();
   TextEditingController difficultyController = TextEditingController();
   TextEditingController imageController = TextEditingController();
-
+  TextEditingController nivelController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   bool valueValidator(String? value) {
@@ -28,6 +28,15 @@ class _FormScreenState extends State<FormScreen> {
   bool difficultyValidator(String? value) {
     if (value != null && value.isEmpty) {
       if (int.parse(value) > 5 || int.parse(value) < 1) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool nivelValidator(String? value) {
+    if (value != null && value.isEmpty) {
+      if (int.parse(value) == 0) {
         return true;
       }
     }
@@ -98,6 +107,26 @@ class _FormScreenState extends State<FormScreen> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      validator: (value) {
+                        if (nivelValidator(value)) {
+                          return 'Insira o nível 0';
+                        }
+                        return null;
+                      },
+                      keyboardType: TextInputType.number,
+                      controller: nivelController,
+                      textAlign: TextAlign.center,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Nível',
+                        fillColor: Colors.white70,
+                        filled: true,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
                       onChanged: (text) {
                         setState(() {});
                       },
@@ -136,27 +165,26 @@ class _FormScreenState extends State<FormScreen> {
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        // print(nameController.text);
-                        // print(difficultyController.text);
-                        // print(imageController.text);
                         TaskDao().save(Task(
                           nameController.text,
                           imageController.text,
                           int.parse(difficultyController.text),
+                          int.parse(nivelController.text),
                         ));
                         // TaskInherited.of(widget.taskContext).newTask(
                         //     nameController.text,
                         //     imageController.text,
                         //     int.parse(difficultyController.text));
-
+                        
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text('Tarefa criada com sucesso!'),
                           ),
                         );
                         Navigator.pop(context);
+                        
                       }
                     },
                     child: const Text('Adicionar'),

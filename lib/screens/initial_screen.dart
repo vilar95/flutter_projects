@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_projects/components_widget/task.dart';
 import 'package:flutter_projects/data/task_dao.dart';
-
-import 'package:flutter_projects/data/task_inherited.dart';
+//import 'package:flutter_projects/data/task_inherited.dart';
 import 'package:flutter_projects/screens/form_screen.dart';
 
 // ignore: must_be_immutable
 class InitialSreen extends StatefulWidget {
   InitialSreen({super.key, this.level = 0});
-  int level;
+  double level;
+  bool levelUp = true;
   @override
   State<InitialSreen> createState() => _InitialSreenState();
 }
 
 class _InitialSreenState extends State<InitialSreen> {
   bool opacity = true;
-  bool levelUp = true;
 
   @override
   Widget build(BuildContext context) {
@@ -26,15 +25,16 @@ class _InitialSreenState extends State<InitialSreen> {
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 500),
             child: IconButton(
-              key: ValueKey<bool>(levelUp),
+              key: ValueKey<bool>(widget.levelUp),
               icon: const Icon(
                 Icons.arrow_circle_up,
               ),
               iconSize: 34,
-              onPressed: () {
+              onPressed: () async {
+                final double futureLevel = await getLevel();
                 setState(() {
-                  levelUp = !levelUp;
-                  widget.level++;
+                  widget.levelUp = !widget.levelUp;
+                  widget.level = futureLevel;
                 });
               },
             ),
@@ -49,10 +49,13 @@ class _InitialSreenState extends State<InitialSreen> {
             child: Row(
               children: [
                 IconButton(
-                    onPressed: () {
-                      setState(() {});
-                    },
-                    icon: const Icon(Icons.refresh)),
+                  onPressed: () {
+                    setState(() {});
+                  },
+                  icon: const Icon(
+                    Icons.refresh,
+                  ),
+                ),
                 IconButton(
                   icon: Icon(opacity ? Icons.visibility_off : Icons.visibility),
                   onPressed: () {
@@ -76,21 +79,22 @@ class _InitialSreenState extends State<InitialSreen> {
                   width: 200,
                   child: LinearProgressIndicator(
                     color: Colors.orange.shade800,
-                    value: (widget.level > 0)
-                        ? widget.level /
-                            TaskInherited.of(context).taskList.length
-                        : 1,
+                    value: (widget.level / 100).clamp(0.0, 1.0),
+                    // value: (widget.level > 0)
+                    //     ? widget.level /
+                    //         TaskInherited.of(context).taskList.length
+                    //     : 1,
                   ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'Level ${TaskInherited.of(context).getLevel()}',
+                  'Level ${widget.level}',
+                  // 'Level ${TaskInherited.of(context).getLevel()}',
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 16,
-                  
                   ),
                 ),
               ),
@@ -104,11 +108,11 @@ class _InitialSreenState extends State<InitialSreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (contextNew) => FormScreen(taskContext: context),
+              builder: (contextNew) => FormScreen(
+                taskContext: context,
+              ),
             ),
-          ).then((value) => setState(() {
-                print('Recarregando a tela inicial');
-              }));
+          ).then((value) => setState(() {}));
         },
         child: const Icon(Icons.add),
       ),
@@ -193,5 +197,11 @@ class _InitialSreenState extends State<InitialSreen> {
         // ),
       ),
     );
+  }
+
+  Future<double> getLevel() async {
+    final x = await TaskDao().findAll();
+    return Future.value(x.fold<double>(0,
+        (value, element) => value + element.dificuldade * element.nivel / 10));
   }
 }
