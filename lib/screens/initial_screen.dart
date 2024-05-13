@@ -90,7 +90,7 @@ class _InitialSreenState extends State<InitialSreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'Level ${widget.level}',
+                  'Level ${widget.level.toStringAsFixed(1)}',
                   // 'Level ${TaskInherited.of(context).getLevel()}',
                   style: const TextStyle(
                     color: Colors.white,
