@@ -90,7 +90,7 @@ class _InitialSreenState extends State<InitialSreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'Level ${widget.level.toStringAsFixed(1)}',
+                  'Level ${widget.level.toStringAsFixed(0)}',
                   // 'Level ${TaskInherited.of(context).getLevel()}',
                   style: const TextStyle(
                     color: Colors.white,
@@ -120,7 +120,7 @@ class _InitialSreenState extends State<InitialSreen> {
         opacity: opacity ? 1 : 0,
         duration: const Duration(seconds: 1),
         child: Padding(
-          padding: const EdgeInsets.only(top: 10, bottom: 70),
+          padding: const EdgeInsets.only(top: 10, bottom: 80),
           child: FutureBuilder<List<Task>>(
               future: TaskDao().findAll(),
               builder: (context, snapshot) {
