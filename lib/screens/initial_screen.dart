@@ -78,7 +78,7 @@ class _InitialSreenState extends State<InitialSreen> {
                 child: SizedBox(
                   width: 200,
                   child: LinearProgressIndicator(
-                    color: Colors.orange.shade800,
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
                     value: (widget.level / 100).clamp(0.0, 1.0),
                     // value: (widget.level > 0)
                     //     ? widget.level /
@@ -92,10 +92,7 @@ class _InitialSreenState extends State<InitialSreen> {
                 child: Text(
                   'Level ${widget.level.toStringAsFixed(0)}',
                   // 'Level ${TaskInherited.of(context).getLevel()}',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
+                  style: Theme.of(context).primaryTextTheme.labelLarge,
                 ),
               ),
             ],
@@ -103,7 +100,7 @@ class _InitialSreenState extends State<InitialSreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.orange.shade700,
+        //backgroundColor: Colors.orange,
         onPressed: () {
           Navigator.push(
             context,

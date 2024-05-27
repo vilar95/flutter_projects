@@ -10,7 +10,7 @@ class Task extends StatefulWidget {
   final int dificuldade;
   int nivel = 0;
   Task(this.nome, this.foto, this.dificuldade, this.nivel, {super.key});
-  
+
   @override
   State<Task> createState() => _TaskState();
 }
@@ -32,7 +32,7 @@ class _TaskState extends State<Task> {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4),
-              color: Colors.blue.shade700,
+              color: Theme.of(context).primaryColor,
             ),
             height: 140,
           ),
@@ -41,7 +41,7 @@ class _TaskState extends State<Task> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4),
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.surface,
                 ),
                 height: 100,
                 child: Row(
@@ -75,8 +75,7 @@ class _TaskState extends State<Task> {
                           width: 200,
                           child: Text(
                             widget.nome,
-                            style: const TextStyle(
-                                fontSize: 24, overflow: TextOverflow.clip),
+                            style: Theme.of(context).textTheme.displaySmall,
                           ),
                         ),
                         Difficulty(
@@ -123,37 +122,39 @@ class _TaskState extends State<Task> {
                                         onPressed: () {
                                           TaskDao().delete(widget.nome);
                                           Navigator.of(context).pop(1);
-                                        setState((){});                               
+                                          setState(() {});
                                         },
                                       ),
                                     ],
                                   );
                                 },
-                              ).then((value) => setState((){}));
+                              ).then((value) => setState(() {}));
                             },
                             style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
+                              backgroundColor: WidgetStateProperty.all<Color>(
                                   Colors.orange.shade700),
                             ),
                             child: const Icon(Icons.close),
                           ),
                           ElevatedButton(
-                            onPressed: () async{
+                            onPressed: () async {
                               setState(() {
-                                widget.nivel++;                                
+                                widget.nivel++;
                               });
                               //print(nivel);
                               await TaskDao().save(widget);
                             },
-                            child: const Padding(
-                              padding: EdgeInsets.all(4.0),
+                            child: Padding(
+                              padding: const EdgeInsets.all(4.0),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.arrow_drop_up),
+                                  const Icon(Icons.arrow_drop_up),
                                   Text(
                                     'UP',
-                                    style: TextStyle(fontSize: 14),
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .labelMedium,
                                   )
                                 ],
                               ),
@@ -173,7 +174,7 @@ class _TaskState extends State<Task> {
                     child: SizedBox(
                       width: 200,
                       child: LinearProgressIndicator(
-                        color: Colors.orange,
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
                         value: (widget.dificuldade > 0)
                             ? (widget.nivel / widget.dificuldade) / 10
                             : 1,
@@ -184,10 +185,7 @@ class _TaskState extends State<Task> {
                     padding: const EdgeInsets.all(10.0),
                     child: Text(
                       'EXP ${widget.nivel}',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
+                      style: Theme.of(context).primaryTextTheme.labelLarge,
                     ),
                   ),
                 ],
